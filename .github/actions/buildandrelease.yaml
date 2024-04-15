@@ -1,0 +1,34 @@
+name: Flutter Build and Release
+
+on:
+  push:
+    branches:
+      - main  # Change this to match your main branch name
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk
+
+      - name: Release APK
+        id: release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/app/outputs/flutter-apk/app-release.apk
+          token: ${{ secrets.PAN }}
+          release_name: Release ${{ github.sha }}
+
