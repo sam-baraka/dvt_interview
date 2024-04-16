@@ -103,54 +103,53 @@ class MainHomePage extends StatelessWidget {
                 : getWeatherType(state.currentWeather.description) == 'rainy'
                     ? AppColors.rainy
                     : AppColors.cloudy,
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      Image.asset(
-                        getWeatherType(state.currentWeather.description) ==
-                                'sunny'
-                            ? 'assets/images/forest_sunny.png'
-                            : getWeatherType(
-                                        state.currentWeather.description) ==
-                                    'rainy'
-                                ? 'assets/images/forest_rainy.png'
-                                : 'assets/images/forest_cloudy.png',
-                        fit: BoxFit.fitWidth,
-                        height: 400,
-                      ),
-                      Positioned(
-                        top: 16,
-                        right: 16,
-                        bottom: 16,
-                        left: 16,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(state.currentWeather.city,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 24)),
-                              Text(
-                                '${state.currentWeather.temp}°C',
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Stack(
+                  children: [
+                    Image.asset(
+                      getWeatherType(state.currentWeather.description) ==
+                              'sunny'
+                          ? 'assets/images/forest_sunny.png'
+                          : getWeatherType(state.currentWeather.description) ==
+                                  'rainy'
+                              ? 'assets/images/forest_rainy.png'
+                              : 'assets/images/forest_cloudy.png',
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                    Positioned(
+                      top: 16,
+                      right: 16,
+                      bottom: 16,
+                      left: 16,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(state.currentWeather.city,
                                 style: const TextStyle(
-                                    color: Colors.white, fontSize: 28),
-                              ),
-                              Text(
-                                state.currentWeather.description.toUpperCase(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ],
-                          ),
+                                    color: Colors.white, fontSize: 24)),
+                            Text(
+                              '${state.currentWeather.temp}°C',
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 28),
+                            ),
+                            Text(
+                              state.currentWeather.description.toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         state.currentWeather.tempMin,
@@ -163,7 +162,10 @@ class MainHomePage extends StatelessWidget {
                                     color: Colors.white, fontSize: 20),
                               ))
                           .toList()),
-                  Row(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: ['Min', 'Current', 'Max']
                           .map((e) => Text(
@@ -172,8 +174,11 @@ class MainHomePage extends StatelessWidget {
                                     color: Colors.white, fontSize: 16),
                               ))
                           .toList()),
-                  Expanded(
-                      child: ListView(
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView(
                     children: state.previousForecastDays
                         .map((e) => InkWell(
                               onTap: () {},
@@ -212,9 +217,9 @@ class MainHomePage extends StatelessWidget {
                               ),
                             ))
                         .toList(),
-                  ))
-                ],
-              ),
+                  ),
+                ))
+              ],
             ),
           );
         } else {
