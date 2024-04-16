@@ -1,3 +1,4 @@
+import 'package:dvt_interview/pages/favorites_page.dart';
 import 'package:dvt_interview/pages/main_home_page.dart';
 import 'package:dvt_interview/pages/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,14 @@ final GoRouter appRouter = GoRouter(routes: <RouteBase>[
           return const MainHomePage();
         },
       ),
+      GoRoute(
+        path: 'favorites',
+        builder: (BuildContext context, GoRouterState state) {
+          return const FavoritesPage();
+        },
+      ),
+
+
     ],
   ),
 ]);

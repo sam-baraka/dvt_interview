@@ -2,9 +2,11 @@ import 'package:dvt_interview/cubits/current_weather_cubit/current_weather_cubit
 import 'package:dvt_interview/cubits/location_cubit/location_cubit.dart';
 import 'package:dvt_interview/cubits/location_cubit/location_state.dart';
 import 'package:dvt_interview/resources/app_colors.dart';
+import 'package:dvt_interview/services/hive_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -14,36 +16,81 @@ class MainHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: CupertinoButton(
-          color: Colors.purple,
-          child: const Text('Search Other Locations'),
-          onPressed: () async {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    BlocConsumer<LocationCubit, LocationState>(
-                  listener: (context, state) {},
-                  builder: (context, state) {
-                    if (state is LocationLoaded) {
-                      return GoogleMapLocationPicker(
-                        currentLatLng: LatLng(state.lat, state.lon),
-                        apiKey: "AIzaSyCkpEMG7UmHVJmqxBZUvlcNGO2Fk-nSUtY",
-                        onNext: (GeocodingResult? result) {
-                          context.read<CurrentWeatherCubit>().getCurrentWeather(
-                              lat: result!.geometry.location.lat,
-                              lon: result.geometry.location.lng);
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CupertinoButton(
+              color: Colors.purple,
+              onPressed: () {
+                context.go('/favorites');
+              },
+              child: const Text('View Favorites')),
+          const SizedBox(height: 16),
+          BlocConsumer<LocationCubit, LocationState>(
+            listener: (context, state) {
+              if (state is LocationError) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.message)));
+              }
+            },
+            builder: (context, state) {
+              if (state is LocationLoaded) {
+                return CupertinoButton(
+                  color: Colors.purple,
+                  child: const Text('Mark As Favorite'),
+                  onPressed: () {
+                    HiveFavoritesService().addFavorite({
+                      'lat': state.lat,
+                      'lon': state.lon,
+                      'name': state.name
+                    });
                   },
-                ),
-              ),
-            );
-          }),
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
+          ),
+          const SizedBox(height: 16),
+          CupertinoButton(
+              color: Colors.purple,
+              child: const Text('Search Other Locations'),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        BlocConsumer<LocationCubit, LocationState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is LocationLoaded) {
+                          return GoogleMapLocationPicker(
+                            currentLatLng: LatLng(state.lat, state.lon),
+                            apiKey: "AIzaSyD-vw60TZXSTh-L0P17zxajnhOzbVCyCco",
+                            onNext: (GeocodingResult? result) {
+                              context.read<LocationCubit>().setLocation(
+                                  result!.geometry.location.lat,
+                                  result.geometry.location.lng,
+                                  result.formattedAddress!);
+                              context
+                                  .read<CurrentWeatherCubit>()
+                                  .getCurrentWeather(
+                                      lat: result.geometry.location.lat,
+                                      lon: result.geometry.location.lng);
+                              Navigator.of(context).pop();
+                            },
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                  ),
+                );
+              }),
+        ],
+      ),
       body: BlocConsumer<CurrentWeatherCubit, CurrentWeatherState>(
           builder: (context, state) {
         if (state is CurrentWeatherLoading) {
@@ -72,7 +119,7 @@ class MainHomePage extends StatelessWidget {
                                     'rainy'
                                 ? 'assets/images/forest_rainy.png'
                                 : 'assets/images/forest_cloudy.png',
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitWidth,
                         height: 400,
                       ),
                       Positioned(

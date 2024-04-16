@@ -13,7 +13,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2)).then((value) {
-      context.go('/main-home-page');
+      context.replace('/main-home-page');
     });
   }
 

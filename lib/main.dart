@@ -5,11 +5,16 @@ import 'package:dvt_interview/services/location_service.dart';
 import 'package:dvt_interview/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:location/location.dart';
-
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'cubits/location_cubit/location_cubit.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var dir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+  await Hive.openBox('favorites');
   runApp(const MyApp());
 }
 
