@@ -1,5 +1,3 @@
-
-
 class CurrentWeather {
   final double temp;
   final double feelsLike;
@@ -15,7 +13,6 @@ class CurrentWeather {
   final String description;
   final String icon;
   final String city;
-  final String country;
   final DateTime sunrise;
   final DateTime sunset;
   final DateTime time;
@@ -35,7 +32,6 @@ class CurrentWeather {
     required this.description,
     required this.icon,
     required this.city,
-    required this.country,
     required this.sunrise,
     required this.sunset,
     required this.time,
@@ -64,10 +60,31 @@ class CurrentWeather {
       description: weather['description'],
       icon: weather['icon'],
       city: json['name'],
-      country: sys['country'],
       sunrise: DateTime.fromMillisecondsSinceEpoch(sys['sunrise'] * 1000),
       sunset: DateTime.fromMillisecondsSinceEpoch(sys['sunset'] * 1000),
       time: DateTime.fromMillisecondsSinceEpoch(json['dt'] * 1000),
     );
+  }
+
+  static toJson(CurrentWeather currentWeather) {
+    return {
+      'temp': currentWeather.temp,
+      'feelsLike': currentWeather.feelsLike,
+      'tempMin': currentWeather.tempMin,
+      'tempMax': currentWeather.tempMax,
+      'pressure': currentWeather.pressure,
+      'humidity': currentWeather.humidity,
+      'windSpeed': currentWeather.windSpeed,
+      'windDeg': currentWeather.windDeg,
+      'rainVolume': currentWeather.rainVolume,
+      'clouds': currentWeather.clouds,
+      'visibility': currentWeather.visibility,
+      'description': currentWeather.description,
+      'icon': currentWeather.icon,
+      'city': currentWeather.city,
+      'sunrise': currentWeather.sunrise.millisecondsSinceEpoch,
+      'sunset': currentWeather.sunset.millisecondsSinceEpoch,
+      'time': currentWeather.time.millisecondsSinceEpoch,
+    };
   }
 }
