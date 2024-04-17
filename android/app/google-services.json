@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "529931582385",
+    "project_id": "dvt-interview",
+    "storage_bucket": "dvt-interview.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529931582385:android:2e365266cf621ce28c1b90",
+        "android_client_info": {
+          "package_name": "com.example.dvt_interview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQINIWVPEAyVPU2Jm8Bkq8T8OPGkt9tPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
