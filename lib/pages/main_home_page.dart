@@ -1,7 +1,11 @@
 import 'package:dvt_interview/cubits/current_weather_cubit/current_weather_cubit.dart';
+import 'package:dvt_interview/cubits/location_cubit/location_cubit.dart';
+import 'package:dvt_interview/cubits/location_cubit/location_state.dart';
 import 'package:dvt_interview/resources/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:intl/intl.dart';
 
 class MainHomePage extends StatelessWidget {
@@ -10,6 +14,36 @@ class MainHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: CupertinoButton(
+          color: Colors.purple,
+          child: const Text('Search Other Locations'),
+          onPressed: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    BlocConsumer<LocationCubit, LocationState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    if (state is LocationLoaded) {
+                      return GoogleMapLocationPicker(
+                        currentLatLng: LatLng(state.lat, state.lon),
+                        apiKey: "AIzaSyD-vw60TZXSTh-L0P17zxajnhOzbVCyCco",
+                        onNext: (GeocodingResult? result) {
+                          context.read<CurrentWeatherCubit>().getCurrentWeather(
+                              lat: result!.geometry.location.lat,
+                              lon: result.geometry.location.lng);
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
+            );
+          }),
       body: BlocConsumer<CurrentWeatherCubit, CurrentWeatherState>(
           builder: (context, state) {
         if (state is CurrentWeatherLoading) {
@@ -50,6 +84,9 @@ class MainHomePage extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Text(state.currentWeather.city,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 24)),
                               Text(
                                 '${state.currentWeather.temp}°C',
                                 style: const TextStyle(
