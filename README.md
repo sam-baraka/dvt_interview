@@ -32,3 +32,7 @@ A Flutter project for interviews.
 ## How to Build the Project
 
 To build the project, ensure you have Flutter installed, then run `flutter pub get` to fetch dependencies. After that, you can run `flutter build` or `flutter run` to build or run the project, respectively.
+
+## How to Run Tests
+
+To run tests, you can use the command `flutter test` to execute all tests within the project. You can also run specific tests by specifying the file or directory containing the tests.
