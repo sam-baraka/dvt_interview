@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Access token with release permissions
         with:
           tag_name: ${{ github.ref }}  # Use full ref to extract tag later
-          artifacts: ${{ artifacts.android-app }}  # Reference uploaded artifact
+          artifacts: /tmp/app/app-release.apk  # Reference uploaded artifact
           # Extract tag name from full ref
           release_name: ${{ steps.extract_tag_name.outputs.tag_name }}
           body: "Automatic release for tag ${{ steps.extract_tag_name.outputs.tag_name }}"  # Optional release description
