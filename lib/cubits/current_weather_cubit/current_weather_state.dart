@@ -8,8 +8,10 @@ class CurrentWeatherLoading extends CurrentWeatherState {}
 
 class CurrentWeatherLoaded extends CurrentWeatherState {
   final CurrentWeather currentWeather;
+  final List<DailyForecastResponse> previousForecastDays;
 
-  CurrentWeatherLoaded(this.currentWeather);
+  CurrentWeatherLoaded(
+      {required this.currentWeather, required this.previousForecastDays});
 }
 
 class CurrentWeatherError extends CurrentWeatherState {
