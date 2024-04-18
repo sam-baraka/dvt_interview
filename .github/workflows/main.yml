@@ -26,11 +26,3 @@ jobs:
       - name: Build APK
         run: flutter build apk
 
-      - name: Release APK
-        id: release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/app/outputs/flutter-apk/app-release.apk
-          token: ${{ secrets.PAN }}
-          release_name: Release ${{ github.sha }}
-          tag_name: ${{ github.sha }}
