@@ -28,7 +28,7 @@ class MainHomePage extends StatelessWidget {
                     if (state is LocationLoaded) {
                       return GoogleMapLocationPicker(
                         currentLatLng: LatLng(state.lat, state.lon),
-                        apiKey: "AIzaSyD-vw60TZXSTh-L0P17zxajnhOzbVCyCco",
+                        apiKey: "AIzaSyCkpEMG7UmHVJmqxBZUvlcNGO2Fk-nSUtY",
                         onNext: (GeocodingResult? result) {
                           context.read<CurrentWeatherCubit>().getCurrentWeather(
                               lat: result!.geometry.location.lat,
