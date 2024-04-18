@@ -16,7 +16,12 @@ class MainHomePage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CurrentWeatherLoaded) {
           return Scaffold(
-            backgroundColor: AppColors.cloudy,
+            backgroundColor: getWeatherType(state.currentWeather.description) ==
+                    'sunny'
+                ? AppColors.sunny
+                : getWeatherType(state.currentWeather.description) == 'rainy'
+                    ? AppColors.rainy
+                    : AppColors.cloudy,
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -25,7 +30,14 @@ class MainHomePage extends StatelessWidget {
                   Stack(
                     children: [
                       Image.asset(
-                        'assets/images/forest_cloudy.png',
+                        getWeatherType(state.currentWeather.description) ==
+                                'sunny'
+                            ? 'assets/images/forest_sunny.png'
+                            : getWeatherType(
+                                        state.currentWeather.description) ==
+                                    'rainy'
+                                ? 'assets/images/forest_rainy.png'
+                                : 'assets/images/forest_cloudy.png',
                         fit: BoxFit.cover,
                         height: 400,
                       ),
@@ -79,7 +91,12 @@ class MainHomePage extends StatelessWidget {
                   Expanded(
                       child: ListView(
                     children: state.previousForecastDays
-                        .map((e) => Row(
+                        .map((e) => InkWell(
+                              onTap: () {},
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                child: Row(
                                   children: [
                                     Expanded(
                                       child: Text(
@@ -91,7 +108,15 @@ class MainHomePage extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     Image.asset(
-                                      'assets/icons/rain.png',
+                                      getWeatherType(state.currentWeather
+                                                  .description) ==
+                                              'sunny'
+                                          ? 'assets/icons/clear.png'
+                                          : getWeatherType(state.currentWeather
+                                                      .description) ==
+                                                  'rainy'
+                                              ? 'assets/icons/rain.png'
+                                              : 'assets/icons/partlysunny.png',
                                       height: 40,
                                     ),
                                     const Spacer(),
@@ -99,15 +124,9 @@ class MainHomePage extends StatelessWidget {
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 16)),
                                   ],
-                                )
-
-                            // ListTile(
-                            //       title: Text(DateFormat('EEEE, d ')
-                            //           .format(DateTime.parse(e.dtTxt))),
-                            //       subtitle: Text('${e.main.temp}°C'),
-                            //     )
-
-                            )
+                                ),
+                              ),
+                            ))
                         .toList(),
                   ))
                 ],
@@ -124,5 +143,17 @@ class MainHomePage extends StatelessWidget {
         }
       }),
     );
+  }
+}
+
+getWeatherType(String input) {
+  if (input.contains('cloud')) {
+    return 'cloudy';
+  }
+  if (input.contains('rain')) {
+    return 'rainy';
+  }
+  if (input.contains('clear')) {
+    return 'sunny';
   }
 }
