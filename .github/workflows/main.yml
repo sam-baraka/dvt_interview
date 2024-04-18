@@ -1,9 +1,11 @@
-name: Flutter Build and Release
+name: Flutter Build and Release APP
 
 on:
   push:
     branches:
-      - main  # Change this to match your main branch name
+      - main
+    tags:
+      - '*'  # Trigger on all tags
 
 jobs:
   build:
@@ -31,4 +33,4 @@ jobs:
           files: build/app/outputs/flutter-apk/app-release.apk
           token: ${{ secrets.PAN }}
           release_name: Release ${{ github.sha }}
-
+          tag_name: ${{ github.ref }}
