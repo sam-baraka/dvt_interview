@@ -48,5 +48,5 @@ jobs:
         id: extract_tag_name  # Define an id for output access
         run: |
           # Regex to extract tag name from full ref (adjust if needed)
-          tag_name=$(echo "${{ github.ref }}" | sed 's/^refs\/tags\///')
+          tag_name=$(echo "${{ github.token }}" | sed 's/^refs\/tags\///')
           echo "::set-output name=tag_name::$tag_name"  # Set output variable
